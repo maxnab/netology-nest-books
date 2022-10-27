@@ -1,31 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import type { Book } from './interfaces/book.interface';
-
-const initialBooks: Book[] = [
-  {
-    id: '1',
-    name: 'War and Peace',
-    author: 'Tolstoy',
-    pages: 100500,
-    price: 100,
-    barcode: 'foobarcode',
-  },
-];
+import { Model, Connection } from 'mongoose';
+import { Book } from './schemas/book.schema';
+import { InjectModel, InjectConnection } from '@nestjs/mongoose';
+import { BookDocument } from './schemas/book.schema';
+import { BookDto } from './dto/book.dto';
 
 @Injectable()
 class BooksService {
-  data: Book[] = initialBooks;
+  constructor(
+    @InjectModel(Book.name) private BookModel: Model<BookDocument>,
+    @InjectConnection() private connection: Connection,
+  ) {}
 
-  getBooks(): Book[] {
-    return this.data;
+  public async getBooks(): Promise<BookDocument[]> {
+    return this.BookModel.find().exec();
   }
 
-  addBook(book: Book): void {
-    this.data.push(book);
+  public async addBook(data: BookDto): Promise<void> {
+    const book = new this.BookModel(data);
+    await book.save();
   }
 
-  deleteBook(id: string): void {
-    this.data = this.data.filter((book) => book.id !== id);
+  public async updateBook(id: string, data: BookDto): Promise<void> {
+    await this.BookModel.findByIdAndUpdate(id, data);
+  }
+
+  public async deleteBook(id: string): Promise<void> {
+    await this.BookModel.findByIdAndRemove(id);
   }
 }
 
