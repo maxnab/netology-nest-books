@@ -1,3 +1,4 @@
+import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
@@ -9,6 +10,7 @@ import { RouterModule } from '@nestjs/core';
   imports: [
     BooksModule,
     UsersModule,
+    AuthModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_CONNECTION),
     RouterModule.register([
