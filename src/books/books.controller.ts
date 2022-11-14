@@ -7,7 +7,6 @@ import {
   Delete,
   Put,
   UsePipes,
-  HttpException,
   UseFilters,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
@@ -25,7 +24,6 @@ class BooksController {
 
   @Get()
   public getAllBooks(): Promise<BookDocument[]> {
-    throw new HttpException('foo', 2002);
     return this.booksService.getBooks();
   }
 
