@@ -5,9 +5,11 @@ import { ConfigModule } from '@nestjs/config';
 import { BooksModule } from './books/books.module';
 import { UsersModule } from './users/users.module';
 import { RouterModule } from '@nestjs/core';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
+    CommentsModule,
     BooksModule,
     UsersModule,
     AuthModule,
@@ -21,6 +23,10 @@ import { RouterModule } from '@nestjs/core';
       {
         path: 'users',
         module: UsersModule,
+      },
+      {
+        path: 'comments',
+        module: CommentsModule,
       },
     ]),
   ],
